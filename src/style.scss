@@ -20,7 +20,6 @@ header {
     flex-grow: 1;
     max-width: 100rem;
     display: flex;
-    border-bottom: 1px solid #aaa;
     align-items: center;
     padding: 0 1rem;
     .logo {
@@ -53,11 +52,124 @@ header {
           transform: scaleX(0);
           transition: all .2s;
         }
-        &:hover {
+        &:hover, &.active {
           color: #c40c24;
           &::after {
             transform: scaleX(1);
           }
+        }
+      }
+    }
+  }
+}
+main {
+  flex-grow: 1;
+  background-color: #eee;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+}
+#page-container {
+  position: absolute;
+  top:0;
+  left:0;
+  right:0;
+}
+#home {
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background: url("/public/img/bg1.png") no-repeat center;
+  background-size: cover;
+  #home-main {
+    flex-grow: 1;
+    max-width: 100rem;
+    position: relative;
+    .mask {
+      position: absolute;
+      bottom: 2rem;
+      right: 2rem;
+      width: 50rem;
+      height: 10rem;
+      background: url("/public/img/fitness-1.png") no-repeat center;
+      background-size: contain;
+    }
+    .content {
+      position: absolute;
+      left:0;
+      right:0;
+      top:0;
+      bottom:0;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: center;
+      .title {
+        background: url("/public/img/titl-name.png") no-repeat left center;
+        background-size: contain;
+        height: 8rem;
+        width: 36rem;
+      }
+      .title-word {
+        color: #FFF;
+        display: flex;
+        align-items: center;
+        .title-letter{
+          font-size:2rem;
+          font-weight: lighter;
+          vertical-align: middle;
+        }
+        .title-single-mark {
+          font-family: serif;
+          font-size: 2rem;
+          vertical-align: middle;
+          padding: 0 .6rem;
+        }
+      }
+      .title-mark {
+        height: .2rem;
+        width: 2rem;
+        background: #FFF;
+        margin-top: 4rem;
+        margin-bottom: 2rem;
+      }
+      .slogan {
+        background: url("/public/img/slogan.png") no-repeat left center;
+        height: 3rem;
+        width: 18rem;
+        background-size: contain;
+      }
+      .slogan-word {
+        color: #FFF;
+        word-spacing: .2rem;
+        letter-spacing: .4rem;
+        font-size: 1.8rem;
+        font-weight: lighter;
+        transform: scaleY(0.9);
+      }
+      #join-us{
+        transition: all .2s;
+        font-size:1.8rem;
+        color: #FFF;
+        border: 1px solid #FFF;
+        border-radius: 2rem;
+        padding: .5rem 3.5rem;
+        vertical-align: middle;
+        margin-top: 12rem;
+        margin-bottom: 10rem;
+        .join-world {
+          vertical-align: middle;
+        }
+        .join-mark {
+          font-family: serif;
+          font-size: 2.2rem;
+          vertical-align: middle;
+          padding-left: 1rem;
+        }
+        cursor: pointer;
+        &:hover {
+          background: #FFF;
+          color: #000;
         }
       }
     }

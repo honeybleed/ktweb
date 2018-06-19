@@ -17,6 +17,9 @@ module.exports = {
         publicPath: "/public/",
         path: path.join(__dirname, 'public/')
     },
+    resolve:{
+        extensions: ['.ts', '.js', '.json']
+    },
     module: {
         rules: [
             {
