@@ -32,6 +32,7 @@ export class PageController {
             for(let i = 0; i< this.pageCount; i++) {
                 (<HTMLElement>this.$pages.item(i)).style.height = baseHeight+"px";
             }
+            this.$container.style.transform = "translateY("+(0-baseHeight * this.pageIndex) + "px"+")";
         };
         for (let i=0; i<this.pageCount; i++) {
             (<HTMLElement>this.$navs.item(i)).onclick = (e:MouseEvent)=>{
@@ -110,3 +111,98 @@ export class PageController {
         this.doScroll(newIndex);
     }
 }
+
+export class AppController{
+    $imgCollection: HTMLCollection;
+    $descCollection: HTMLCollection;
+    $triggerCollection: HTMLCollection;
+    timeout:number;
+    appIndex: number;
+    loopID:number;
+    manualTime: number;
+    constructor(imgs: HTMLCollection, descs: HTMLCollection, trigs: HTMLCollection, timeout: number) {
+        this.$imgCollection = imgs;
+        this.$triggerCollection = trigs;
+        this.$descCollection = descs;
+        this.timeout = timeout;
+        this.init();
+        // this.loopStart();
+    }
+    init(){
+        this.manualTime = (new Date()).getTime();
+        this.loopID = -1;
+        this.appIndex = 0;
+        this.$imgCollection.item(0).classList.add('show');
+        this.$descCollection.item(0).classList.add('show');
+        this.$triggerCollection.item(0).classList.add('on');
+        for(let i=0; i<this.$triggerCollection.length; i++) {
+            (<HTMLElement>this.$triggerCollection.item(i)).onclick = ()=>{
+                this.manualTime = (new Date()).getTime();
+               this.triggerTo(i);
+            }
+        }
+    }
+    triggerTo(index:number) {
+        if(index<0 ||index>=this.$imgCollection.length || index === this.appIndex) return;
+        let oldIndex = this.appIndex;
+        this.appIndex = index;
+        this.$imgCollection.item(oldIndex).classList.remove('show');
+        this.$descCollection.item(oldIndex).classList.remove('show');
+        this.$triggerCollection.item(oldIndex).classList.remove('on');
+        this.$imgCollection.item(index).classList.add('show');
+        this.$descCollection.item(index).classList.add('show');
+        this.$triggerCollection.item(index).classList.add('on');
+    }
+    loopStart(){
+        this.loopID = window.setInterval(()=>{
+            let current = (new Date()).getTime();
+            if((current - this.manualTime) > this.timeout) {
+                let newIndex = this.appIndex + 1;
+                if(newIndex >= this.$triggerCollection.length){
+                    newIndex = 0;
+                }
+                this.triggerTo(newIndex);
+            }
+        }, this.timeout)
+    }
+    loopStop() {
+        window.clearInterval(this.loopID)
+    }
+}
+
+export class BikeController {
+    $label:HTMLElement;
+    $partList: HTMLCollection;
+    partIndex: number;
+    constructor(label: HTMLElement, part: HTMLCollection){
+        this.$label = label;
+        this.$partList = part;
+        this.init();
+    }
+    init(){
+        this.partIndex = 0;
+        this.$partList.item(0).classList.add('on');
+        this.$label.innerText = this.$partList.item(0).attributes["title"].value;
+        for(let i=0; i<this.$partList.length; i++) {
+            let $item = <HTMLElement>this.$partList.item(i);
+            $item.onmouseenter = ()=>{
+                this.moveTo(i);
+            }
+        }
+    }
+    moveTo(index:number){
+        if(index < 0 || index >= this.$partList.length || index===this.partIndex) return;
+        let oldIndex = this.partIndex;
+        this.partIndex = index;
+        let $item = this.$partList.item(index);
+        let $oldItem = this.$partList.item(oldIndex);
+        this.$label.innerText = $item.attributes["title"].value;
+        $item.classList.add('on');
+        $oldItem.classList.remove('on');
+    }
+}
+
+export const isMobile = () => {
+    let agent = navigator.userAgent;
+    return !!agent.match(/AppleWebKit.*Mobile.*/);
+};
